@@ -6,6 +6,10 @@ import Button from "./components/Button";
 import { BookList, BookListItem } from "./components/BookList";
 import { Container, Row, Col } from "./components/Grid";
 import axios from "axios";
+import DeleteBtn from './components/DeleteBtn';
+import SaveBtn from './components/SaveBtn';
+import { Link } from 'react-router-dom';
+
 //import API from "./utils/API";
 
 
@@ -50,8 +54,8 @@ render() {
                 <Row>
                   <Col size="xs-9 sm-10">
                     <Input
-                      name="bookSearch"
-                      value={this.state.bookSearch}
+                      name="title"
+                      value={this.state.title}
                       onChange={this.handleInputChange}
                       placeholder="Search For a Book"
                     />
@@ -76,17 +80,18 @@ render() {
               <h1 className="text-center">No Book to Display</h1>
             ) : (
               <BookList>
-                {this.state.books.map(book => {
-                  return (
-                    <BookListItem
-                      key={book.title}
-                      title={book.title}
-                      href={book.href}
-                      thumbnail={book.thumbnail}
-                    />
-                  );
-                })}
-              </BookList>
+								{this.state.books.map(book => (
+									<BookListItem key={book.id}>
+										<Link to={'/books/' + book.id}>
+											<strong>
+												{book.volumeInfo.title} by {book.volumeInfo.authors[0]}
+											</strong>
+										</Link>
+										<SaveBtn onClick={() => this.saveBook(book)} />
+										<DeleteBtn onClick={() => this.deleteBook(book)} />
+									</BookListItem>
+								))}
+							</BookList>
             )}
           </Col>
         </Row>
