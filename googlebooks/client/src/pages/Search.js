@@ -18,18 +18,18 @@ class Books extends Component {
 	};
 
 	componentDidMount() {
-		//this.loadBooks();
+		this.loadBooks();
 	}
 
-	// loadBooks = () => {
-	// 	API.getBooks()
-	// 		.then((res) => {
-	// 			console.log(res);
-	// 			debugger
-	// 			this.setState({ books: res.data, title: '', author: '', synopsis: '' });
-	// 		})
-	// 		.catch((err) => console.log(err));
-	// };
+	 loadBooks = () => {
+	 	API.getBooks()
+	 		.then((res) => {
+	 			console.log(res);
+	 			debugger
+	 			this.setState({ books: res.data, title: '', author: '', synopsis: '' });
+	 		})
+	 		.catch((err) => console.log(err));
+	 };
 
 	deleteBook = (id) => {
 		console.log(id);
