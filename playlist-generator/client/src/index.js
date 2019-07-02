@@ -4,5 +4,10 @@ import './index.css';
 import App from './App';
 import registerServiceWorker from './registerServiceWorker';
 
-ReactDOM.render(<App />, document.getElementById('root'));
+let location = {
+    name: "nashville,tennessee"
+}
+
+
+ReactDOM.render(<App location={location}/>, document.getElementById('root'));
 registerServiceWorker();
