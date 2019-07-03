@@ -1,39 +1,44 @@
-import React, { Component } from "react";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 
-
-
-class Input extends Component {
-   state={
-       value: ''
-   }
-
-    updateLocation(event) {
-        this.setState({
-            value: this.props.value,
-        });
-    }
-    render() {
-        console.log("state prop from input.js")
-
-      return (
-        <div className="input-group">
-        <h1>Location</h1>
-            <div>inputValue: {this.state.value}</div>
-            <hr/>
-            <div>cityState= {this.props.location}</div>
-        <hr/>
-                <div><label for="location">Type: </label>
-
-                <div className="form-group">
-                    <input className="input-field" type="text" defaultValue="nashville,tennessee" value={this.state.value}
-                    onChange= {e => this.setState({value: e.target.value})}/>
-                    <button onclick={this.updateLocation.bind(this)} >Submit</button>
-            </div>
-            </div>
-        </div>
-      )
-    }
+export class Input extends Component {
+state = {
+    title: ''
 }
-  export default Input;
 
-  
+onSubmit = (e) => {
+    e.preventDefault();
+    this.props.addInput(this.state.title);
+    this.setState({ title: ''});
+}
+  onChange = (e) => this.setState({ [e.target.name]: e.target.value });
+  render() {
+
+    return (
+      <form onSubmit={this.onSubmit} style={{ display: 'flex' }}>
+        <input 
+          type="text" 
+          name="title" 
+          style={{ flex: '10', padding: '5px' }}
+          placeholder="city,state" 
+          value={this.state.title}
+          onChange={this.onChange}
+        />
+        <input 
+          type="submit" 
+          value="Submit" 
+          className="btn"
+          onSubmit={this.onSubmit}
+          style={{flex: '1'}}
+        />
+      </form>
+    )
+  }
+}
+
+// PropTypes
+Input.propTypes = {
+  switchCity: PropTypes.func.isRequired
+}
+
+export default Input
