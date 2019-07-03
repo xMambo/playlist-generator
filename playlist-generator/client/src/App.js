@@ -4,29 +4,33 @@ import FetchBands from "./components/FetchBands";
 import Input from "./components/Input";
 import Location from "./components/Location";
 import NewFetch from "./components/pages/NewFetch"
-import uuid from 'uuid'
+
 
 class App extends Component {
   state = {
     location: [
       {
-        id: uuid.v4(),
         cityState: ['nashville,tennessee'],
         items: [],
-        isLoaded: false,  
       }
     ]
   }
 
+  componentDidMount () {
 
+    this.fetchAPI(this.state.location[0].cityState)
+  
+  }
 
-    componentDidMount() {
+fetchAPI = () => {
+
       console.log("fetch:", this.state.location[0].cityState)
       const APIKey = "166a433c57516f51dfab1f7edaed8413";
       const BASEURL = "https://api.openweathermap.org/data/2.5/weather?q=";
       const UNITS = "&units=imperial&appid="
+      const place = this.state.location[0].cityState
   
-      let url = BASEURL+this.state.location[0].cityState+UNITS+APIKey;
+      let url = BASEURL+place+UNITS+APIKey;
      fetch(url)
      .then(res => res.json())
      // eslint-disable-next-line
@@ -37,21 +41,18 @@ class App extends Component {
          })
          console.log("fetch url data:", data);
      });
+    }
   
-    };
 // Add Input
     addInput = (title) => {
       const newInput = {
-        id: uuid.v4(),
         cityState: title,
-        addCity: function(city) {
-          this.location.push(city)
-        }
+        
       }
-    this.setState({ location: [...this.state.location, newInput] });
+    this.setState({ location: [newInput] });
     
     }
-  
+
   
     render() {
   
@@ -85,7 +86,14 @@ class App extends Component {
                         <FetchBands />
                       </div>
                       <div className="inputField">
-                        <Input addInput={this.addInput} />
+                        <Input addInput={this.addInput} fetchAPI={this.fetchAPI}/>
+                            <input 
+                            type="submit" 
+                            value="Generate" 
+                            className="btn"
+                            onClick={()=>this.fetchAPI()}
+                            style={{flex: '1'}}
+        />
                       </div>
                       <div>
                       <Location location={this.state.location} switchState={this.switchState} handleChange={this.handleChange} handleSubmit={this.handleSubmit} value={this.state.value}/>

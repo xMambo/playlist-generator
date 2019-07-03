@@ -3,13 +3,15 @@ import PropTypes from 'prop-types';
 
 export class Input extends Component {
 state = {
-    title: ''
+    title: '',
+    cityState: ''
 }
 
 onSubmit = (e) => {
     e.preventDefault();
     this.props.addInput(this.state.title);
-    this.setState({ title: ''});
+    this.setState({ cityState: this.state.title});
+    this.setState({ title: ""})
 }
   onChange = (e) => this.setState({ [e.target.name]: e.target.value });
   render() {
@@ -23,7 +25,7 @@ onSubmit = (e) => {
           placeholder="city,state" 
           value={this.state.title}
           onChange={this.onChange}
-        />
+          />
         <input 
           type="submit" 
           value="Submit" 
