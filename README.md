@@ -1,35 +1,33 @@
-# Spotify Accounts Authentication Examples
+# spotify-api-intro
+This Repo is the result of a tutorial that teaches how to use Spotify's API with react.
+It's a siple app that allos users to see what song they currently have playing on Spotify.
+There are two parts to it, the auth-server, and the client. 
 
-This project contains basic demos showing the different OAuth 2.0 flows for [authenticating against the Spotify Web API](https://developer.spotify.com/web-api/authorization-guide/).
+## Getting Statrted
 
-These examples cover:
+### 1) Create an App
+- Visit https://developer.spotify.com/ 
+- Log in and create an app
+- Enter http//localhost:8888/callback as the redirect uri
+- Save your changes
+- Copy down the following: Redirect uri, client id, client secret
 
-* Authorization Code flow
-* Client Credentials flow
-* Implicit Grant flow
 
-## Installation
+### 2)  Start Auth Server
+- Navigate to the auth-server directory `cd auth-server`
+- Install the dependencies `npm install`
+- Paste in the redirect uri, client id, and client secret you copied in step 1
+- Run the Server `node authorization_code/app.js`
 
-These examples run on Node.js. On [its website](http://www.nodejs.org/download/) you can find instructions on how to install it. You can also follow [this gist](https://gist.github.com/isaacs/579814) for a quick and easy way to install Node.js and npm.
+### 3)  Start Client
+- Navigate to the auth-server directory `cd client`
+- Install the dependencies `npm install`
+- Run the Server `npm start`
 
-Once installed, clone the repository and install its dependencies running:
+### 4)  Use the App
+- Make sure you have a song playing (or paused) on a Spotify app
+- Visit http://localhost:3000
+- Click 'Log in with Spotify' and log in
+- Click the 'Check Now Playing' Button
+- Your currently playing song's name and album art should appear
 
-    $ npm install
-
-### Using your own credentials
-You will need to register your app and get your own credentials from the Spotify for Developers Dashboard.
-
-To do so, go to [your Spotify for Developers Dashboard](https://beta.developer.spotify.com/dashboard) and create your application. For the examples, we registered these Redirect URIs:
-
-* http://localhost:8888 (needed for the implicit grant flow)
-* http://localhost:8888/callback
-
-Once you have created your app, replace the `client_id`, `redirect_uri` and `client_secret` in the examples with the ones you get from My Applications.
-
-## Running the examples
-In order to run the different examples, open the folder with the name of the flow you want to try out, and run its `app.js` file. For instance, to run the Authorization Code example do:
-
-    $ cd authorization_code
-    $ node app.js
-
-Then, open `http://localhost:8888` in a browser.
