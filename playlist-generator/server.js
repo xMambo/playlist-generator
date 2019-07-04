@@ -9,8 +9,8 @@ var mongoose = require("mongoose");
 // Require all models
 var db = require("./client/src/models");
 
-var PORT = 3001;
 
+var PORT = 3001;
 
 // Initialize Express
 var app = express();
@@ -41,7 +41,6 @@ mongoose.connection.once('open', function () {
     console.log('Database error:', error);
 });
 
-db.Band.collection.drop();
 
 function getBandData() {
     var cheerio = require("cheerio");
@@ -78,18 +77,16 @@ function getBandData() {
             // With cheerio, find each p-tag with the "title" class
             // (i: iterator. element: the current element)
             $("div.upcomingEvents-075e0336").each(function (i, element) {
-                
+
                 // Save the text of the element in a "title" variable
                 //var title = $(element).text();
-                
+
                 //let eventsNear = $(element).find("h1").text();
-                
+
                 $(element).find("h2.event-5daafce9").each(function (i, element) {
-                   //add this code if you want to limit the number of bands
-                    /* if(i === 10) {
-                        return false;
-                    };*/
-                    let bandName = $(element).text()
+                    let bandName = $(element).text();
+                    let imgUrl = $(element).find('img').attr('src')
+
 
 
                     // In the currently selected element, look at its child elements (i.e., its a-tags),
@@ -103,26 +100,24 @@ function getBandData() {
                     });
                 });
 
-                
-                  
+                db.Band.deleteMany({}, function (err) {});
 
                 db.Band.create(results)
-                .then(function (dbBands) {
-                    console.log("********************************************\n" +
-                    "These bands have been added to the database\n" +
-                    "and the old content has been removed." +
-                    "\n********************************************");
-                })
-                .catch(function (err) {
-                    console.log(err);
-                });
+                    .then(function (dbBands) {
+                        console.log("********************************************\n" +
+                            "These bands have been added to the database\n" +
+                            "and the old content has been removed." +
+                            "\n********************************************");
+                    })
+                    .catch(function (err) {
+                        console.log(err);
+                    });
             });
-            
+
             
             // Log the results once you've looped through each of the elements found with cheerio
             console.log("These are the results from getBandData:\n", results);
             
-
             // Route for getting all Articles from the db
             app.get("/bands", function (req, res) {
                 db.Band.find({})
@@ -134,7 +129,7 @@ function getBandData() {
                     });
             });
         });
-    }
+}
 
 // Start the server
 app.listen(PORT, function () {

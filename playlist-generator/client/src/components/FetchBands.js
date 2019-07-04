@@ -30,7 +30,6 @@ componentDidMount() {
 
   }
 
-
 render() {
     var { isLoaded } = this.state;
     if (!isLoaded) {
@@ -38,8 +37,8 @@ render() {
     }
     else {
         return (
-            <ul>{this.state.items.map((item, index) => 
-                <li key={index}>{item.bandName}</li>)}</ul>
+            <ul>{this.state.items.map((item, key) => 
+                <li key={item.id}>{item.bandName}</li>)}</ul>
         );
     };
 }

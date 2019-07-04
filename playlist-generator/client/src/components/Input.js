@@ -40,7 +40,6 @@ onSubmit = (e) => {
 
 // PropTypes
 Input.propTypes = {
-  switchCity: PropTypes.func.isRequired
 }
 
 export default Input

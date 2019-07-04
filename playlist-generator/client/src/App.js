@@ -1,9 +1,11 @@
 import React, { Component } from "react";
 import { BrowserRouter as Router, Route } from 'react-router-dom';
-import FetchBands from "./components/FetchBands";
+//import FetchBands from "./components/FetchBands";
 import Input from "./components/Input";
 import Location from "./components/Location";
-import NewFetch from "./components/pages/NewFetch"
+import BandScraper from "./components/BandScraper";
+import FetchBands from "./components/FetchBands";
+
 
 
 class App extends Component {
@@ -12,6 +14,8 @@ class App extends Component {
       {
         cityState: ['nashville,tennessee'],
         items: [],
+        newLoc: [],
+        bandData: [],
       }
     ]
   }
@@ -40,8 +44,10 @@ fetchAPI = () => {
              items: data,
          })
          console.log("fetch url data:", data);
+         console.log("bandData:", this.state.location)
      });
     }
+
   
 // Add Input
     addInput = (title) => {
@@ -53,7 +59,41 @@ fetchAPI = () => {
     
     }
 
+    componentWillUpdate(getId) {
+      this.getId(this.state.location)
+    }
+      getId = () => {
+          console.log("from getId()", this.state.isLoaded)
   
+  
+          var Spotify = require('node-spotify-api');
+   
+  var spotify = new Spotify({
+    id: "294109e617d5473cb40ce9746101cbb2",
+    secret: "19f4c0dd43ba4818ba3ee01b1c9f0bba"
+  });
+   
+  spotify.search({
+      type: "artist",
+      query: 'Your Old Droog'
+  }, function (err, data) {
+      var ID = data.artists.items[0].id;
+      if (err) {
+          return console.log("Error occured: " + err);
+      }
+      {
+          console.log("\n----------------------------------");
+          console.log("Artist_id: " + ID)
+          console.log("----------------------------------\n");
+  
+      }
+  });
+  
+  
+      }
+  
+    
+
     render() {
   
       var { isLoaded } = this.state;
@@ -67,9 +107,6 @@ fetchAPI = () => {
               <Route exact path="/" render={props => (
                 <React.Fragment>
                 <div className="container">
-                <button type="button" onClick={this.onClearArray}>
-          Clear Array
-        </button>
                     <ul>
                       <li>
                           {this.state.items.name}
@@ -83,7 +120,10 @@ fetchAPI = () => {
                     </ul>
 
                       <div className="fetchBands">
-                        <FetchBands />
+
+                      </div>
+                      <div className="bandscraper">
+                      <BandScraper />
                       </div>
                       <div className="inputField">
                         <Input addInput={this.addInput} fetchAPI={this.fetchAPI}/>
@@ -91,25 +131,47 @@ fetchAPI = () => {
                             type="submit" 
                             value="Generate" 
                             className="btn"
-                            onClick={()=>this.fetchAPI()}
+                            onClick={()=>this.fetchAPI() + this.getBandData()}
                             style={{flex: '1'}}
         />
                       </div>
                       <div>
                       <Location location={this.state.location} switchState={this.switchState} handleChange={this.handleChange} handleSubmit={this.handleSubmit} value={this.state.value}/>
                       </div>
+                      <FetchBands getId={this.getId}/>
+                            <input 
+                            type="submit" 
+                            value="Get ID" 
+                            className="btn"
+                            onClick={()=>this.getId()}
+                            style={{flex: '1'}}/>
                     </div>
+
+                    <h3><Logger newLat={this.state.items.coord.lat} newLon={this.state.items.coord.lat}/></h3>
                     </React.Fragment>
               )} />
-              <Route path="/newfetch" component={NewFetch} />
-              <div className="inputField">
+
                         
-                      </div>
+
                   </div>
             </Router>
           );
       };
   }
 }
+
+class Logger extends Component {
+
+  componentWillReceiveProps(newProps){
+    console.log("componentWillRecieveProps() is Triggered");
+    console.log("new props:", newProps);
+
+  }
+
+  render(){
+    return this.props.newLat
+  }
+}
+
 
 export default App;
